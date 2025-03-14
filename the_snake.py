@@ -43,7 +43,7 @@ clock = pygame.time.Clock()
 class GameObject:
     """Базовый класс, от которого наследуются другие игровые объекты."""
 
-    def __init__(self, position, body_color):
+    def __init__(self, position=(0, 0), body_color=(255, 255, 255)):
         self.position = position
         self.body_color = body_color
 
@@ -92,19 +92,19 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Обновляет позицию змейки."""
+        """Обновляет позицию змейки"""
         self.position = self.get_head_position()
         (dx, dy) = self.direction
 
-        self.position = (
-            (self.position[0] + dx * GRID_SIZE) % SCREEN_WIDTH,
-            (self.position[1] + dy * GRID_SIZE) % SCREEN_HEIGHT,
-        )
+        self.position = ((self.position[0] + dx * GRID_SIZE) % SCREEN_WIDTH,
+                         (self.position[1] + dy * GRID_SIZE) % SCREEN_HEIGHT)
 
         if self.position in self.positions[2:]:
             self.reset()
 
         self.positions.insert(0, self.position)
+
+        # Если не съела яблоко, удаляем последний сегмент
         if len(self.positions) > self.length:
             self.positions.pop()
 
@@ -170,6 +170,7 @@ def main():
 
         if snake.get_head_position() == apple.position:
             snake.length += 1
+            snake.positions.append(snake.positions[-1]) 
             apple.position = apple.randomize_position()
 
         screen.fill(BOARD_BACKGROUND_COLOR)
