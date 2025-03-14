@@ -170,7 +170,7 @@ def main():
 
         if snake.get_head_position() == apple.position:
             snake.length += 1
-            snake.positions.append(snake.positions[-1]) 
+            snake.positions.append(snake.positions[-1])
             apple.position = apple.randomize_position()
 
         screen.fill(BOARD_BACKGROUND_COLOR)
